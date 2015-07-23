@@ -37,14 +37,14 @@ var triangleDirections = {
 		},
 		"AB": {
 			parentDir:	"AB",
-			neighbourName:	"11"
+			neighbourName:	"10"
 		},
 		"BC": {
 			neighbourName:	"00"
 		},
 		"CA": {
 			parentDir:	"CA",
-			neighbourName:	"10"
+			neighbourName:	"11"
 		},
 	},
 	"10":	{
@@ -110,5 +110,6 @@ function positionFrom(path, direction) {
 	} else {
 		neighbour = parentPath + res.neighbourName;
 	}
+	console.log("%s -> %s => %s", path, direction, neighbour);
 	return neighbour;
 }
