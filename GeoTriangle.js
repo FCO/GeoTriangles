@@ -38,7 +38,7 @@ GeoTriangle.sign = function(p1, p2, p3) {
 
 GeoTriangle.prototype = {
 	getFromPath:	function(path) {
-		if(path.length >= 2) {
+		if(path && path.length >= 2) {
 			var subPath = path.substr(0, 2);
 			path = path.substr(2);
 			if(this.hasChildren && subPath in this.children) {

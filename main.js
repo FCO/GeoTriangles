@@ -11,7 +11,7 @@ function toDec(path) {
 	});
 }
 
-var t = new GeoTriangle(canvas, new Point2D(500, 0), true, 750, 25);
+var t = new GeoTriangle(canvas, new Point2D(500, 0), true, 750, 10);
 t.draw();
 
 canvas.addEventListener('mousemove', function(evt) {
@@ -27,16 +27,41 @@ canvas.addEventListener('mousemove', function(evt) {
 		t.colorizePath(path);
 
 		var min = t.getFromPath(path);
-		min.color = "green";
-		min.colorFill = "rgba(0, 255, 0, 0.5)";
-		min.draw(true);
 
-		var oposite = t.getFromPath(positionFrom(path, min.nearstVertice(mousePos)));
-		oposite.color = "green";
-		oposite.colorFill = "rgba(0, 255, 0, 0.5)";
-		oposite.draw(true);
+		var centerV = min.nearstVertice(mousePos);
+		var center = min[centerV];
+		
+		var tri = [path];
+		var paths = ["AB", "BC", "CA"].filter(function(item) {
+			console.log("centerV: %s, item: %s", centerV, item);
+			return item.indexOf(centerV) >= 0;
+		});
 
-		var center = min[min.nearstVertice(mousePos)];
+		console.log(paths);
+
+		Array.prototype.push.apply(tri,
+			paths.map(function(item) {
+				return positionFrom(path, item);
+			})
+		);
+
+		tri.forEach(function(item) {
+			var it = t.getFromPath(item);
+			if(it) {
+				it.color		= "green";
+				it.colorFill		= "rgba(0, 255, 0, 0.5)";
+				it.draw(true);
+
+				var center		= it.nearstVertice(mousePos);
+				var oposite		= t.getFromPath(positionFrom(item, center));
+				if(oposite) {
+					oposite.color		= "green";
+					oposite.colorFill	= "rgba(0, 255, 0, 0.5)";
+					oposite.draw(true);
+				}
+			}
+
+		});
 
 		var context = canvas.getContext('2d');
 		context.beginPath();

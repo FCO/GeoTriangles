@@ -100,16 +100,35 @@ var triangleDirections = {
 };
 
 function positionFrom(path, direction) {
-	var neighbour;
-	var parentPath = path.substr(0, path.length - 2);
-	var subPath = path.substr(-2);
+	if(path) {
+		var neighbour;
+		var parentPath = path.substr(0, path.length - 2);
+		var subPath = path.substr(-2);
 
-	var res = triangleDirections[subPath][direction];
-	if("parentDir" in res) {
-		neighbour = positionFrom(parentPath, res.parentDir) + res.neighbourName;
-	} else {
-		neighbour = parentPath + res.neighbourName;
+		if(subPath in triangleDirections && direction in triangleDirections[subPath]) {
+			var res = triangleDirections[subPath][direction];
+			if("parentDir" in res) {
+				neighbour = positionFrom(parentPath, res.parentDir) + res.neighbourName;
+			} else {
+				neighbour = parentPath + res.neighbourName;
+			}
+		}
+		return neighbour;
 	}
-	console.log("%s -> %s => %s", path, direction, neighbour);
-	return neighbour;
+}
+
+function getHexagon(path, center) {
+	console.log(center);
+	var tri = [path];
+	Array.prototype.push.apply(tri,
+		["AB", "BC", "CD"].filter(function(item) {
+			return item.indexOf(center) >= 0;
+		}).map(function(item) {
+			return positionFrom(path, item);
+		})
+	);
+	tri.forEach(function(item) {
+		tri.push(positionFrom(item, center));
+	});
+	return tri;
 }
