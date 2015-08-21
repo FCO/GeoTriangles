@@ -65,6 +65,8 @@ If we assume that `pi = 3.1416`, we reach the following results:
 In other words, the hexagon approach reduces the false positive area when performing a radius search
 in approximately `62.41%`.
 
+![](docs/hexagon.png)
+
 ## Conclusion
 
 This work is not in any way a criticism to the Geohash, only an alternative to optimizing a very specific
